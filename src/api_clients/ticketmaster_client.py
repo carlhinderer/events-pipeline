@@ -1,7 +1,9 @@
 import json
 import os
+import shutil
 
 from datetime import date, datetime, timedelta
+from pathlib import Path
 
 import requests
 
@@ -14,20 +16,27 @@ BASE_URL = 'https://app.ticketmaster.com/discovery/v2/events.json'
 DENVER_MARKET_ID = 6
 COUNTRY_CODE = 'US'
 
-TEMP_DIRECTORY = '/tmp/ticketmaster/'
+DESTINATION_DIRECTORY = '/tmp/ticketmaster'
+DESTINATION_FILENAME = 'events.json'
 
 
 def download_next_week_events():
     try:
-        create_temp_directory()
+        create_directory()
         events = search_denver_next_week_events()
+        breakpoint()
         save_events(events)
-    except:
-        print('Exception encountered.')
+    except Exception as e:
+        print('An exception occured: ', e.__class__)
+        print('Exception message: ', e.message)
 
 
-def create_temp_directory():
-    pass
+def create_directory():
+    dirpath = Path(DESTINATION_DIRECTORY)
+    if dirpath.exists():
+        shutil.rmtree(dirpath)
+
+    os.mkdir(dirpath)
 
 
 def search_denver_next_week_events():
@@ -47,7 +56,9 @@ def search_denver_next_week_events():
 
 
 def save_events(events):
-    pass
+    file_path = os.path.join(DESTINATION_DIRECTORY, DESTINATION_FILENAME)
+    with open(file_path, 'w') as data_file:
+        json.dump(events, data_file)
 
 
 def query_params(page):
