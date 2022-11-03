@@ -60,7 +60,6 @@ def filter_out_test_events(df):
 
 def drop_unnecessary_columns(df):
     columns_to_drop = [
-        '_embedded',
         '_links',
         'accessibility',
         'ageRestrictions',
@@ -79,6 +78,13 @@ def drop_unnecessary_columns(df):
     ]
 
     return df.drop(*columns_to_drop)
+
+
+def add_location_info(df):
+    df = df.withColumn('venue_name', col('_embedded')['venues'][0]['name'])
+    df = df.withColumn('city', col('_embedded')['venues'][0]['city']['name'])
+    df = df.withColumn('zip_code', col('_embedded')['venues'][0]['postalCode'])
+    return df.drop('_embedded')
 
 
 def add_date_time_info(df):
@@ -112,6 +118,7 @@ def add_event_description(df):
 def clean_events(df):
     df = filter_out_test_events(df)
     df = drop_unnecessary_columns(df)
+    df = add_location_info(df)
     df = add_date_time_info(df)
     df = rename_columns(df)
     df = add_event_classification_info(df)
