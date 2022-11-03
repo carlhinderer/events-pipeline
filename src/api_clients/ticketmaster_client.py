@@ -24,7 +24,6 @@ def download_next_week_events():
     try:
         create_directory()
         events = search_denver_next_week_events()
-        breakpoint()
         save_events(events)
     except Exception as e:
         print('An exception occured: ', e.__class__)

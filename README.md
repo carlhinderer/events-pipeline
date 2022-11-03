@@ -6,4 +6,4 @@ Install the project locally:
 
 Add packages to the requirements.txt without the editable package:
 
-`$ pip freeze --exclude-editable < requirements.txt`
+`$ pip freeze --exclude-editable > requirements.txt`
