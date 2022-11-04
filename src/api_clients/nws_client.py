@@ -1,11 +1,9 @@
 import json
-import os
-import shutil
 import time
 
-from pathlib import Path
-
 import requests
+
+from api_utilities import create_directory, save_data
 
 
 WEATHER_METADATA = {
@@ -57,19 +55,11 @@ DESTINATION_FILENAME = 'forecast.json'
 
 def download_next_week_weather():
     try:
-        create_directory()
+        create_directory(DESTINATION_DIRECTORY)
         forecasts = retrive_next_week_forecast()
-        save_forecast(forecasts)
+        save_data(forecasts, DESTINATION_DIRECTORY, DESTINATION_FILENAME)
     except Exception as e:
         print('An exception occured: ', e)
-
-
-def create_directory():
-    dirpath = Path(DESTINATION_DIRECTORY)
-    if dirpath.exists():
-        shutil.rmtree(dirpath)
-
-    os.mkdir(dirpath)
 
 
 def retrive_next_week_forecast():
@@ -101,12 +91,6 @@ def get_url(city):
     grid_x = WEATHER_METADATA[city]['grid_x']
     grid_y = WEATHER_METADATA[city]['grid_y']
     return f'{BASE_URL}/{grid_id}/{grid_x},{grid_y}/forecast'
-
-
-def save_forecast(forecasts):
-    file_path = os.path.join(DESTINATION_DIRECTORY, DESTINATION_FILENAME)
-    with open(file_path, 'w') as data_file:
-        json.dump(forecasts, data_file)
 
 
 if __name__ == '__main__':

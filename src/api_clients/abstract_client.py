@@ -6,7 +6,7 @@ from datetime import date, timedelta
 import requests
 
 from config import settings
-from api_utilities import create_directory
+from api_utilities import create_directory, save_data
 
 
 API_KEY = settings.ABSTRACT_API_KEY
@@ -23,7 +23,7 @@ def download_next_week_holidays():
     try:
         create_directory(DESTINATION_DIRECTORY)
         holidays = retrieve_next_week_holidays()
-        save_holidays(holidays)
+        save_data(holidays, DESTINATION_DIRECTORY, DESTINATION_FILENAME)
     except Exception as e:
         print('An exception occured: ', e)
 
@@ -62,12 +62,6 @@ def get_query_params(day_to_retrieve):
         'month': day_to_retrieve.month,
         'day': day_to_retrieve.day
     }
-
-
-def save_holidays(holidays):
-    file_path = os.path.join(DESTINATION_DIRECTORY, DESTINATION_FILENAME)
-    with open(file_path, 'w') as data_file:
-        json.dump(holidays, data_file)
 
 
 if __name__ == '__main__':

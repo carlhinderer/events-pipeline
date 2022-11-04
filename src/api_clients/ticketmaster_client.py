@@ -1,13 +1,11 @@
 import json
-import os
-import shutil
 
 from datetime import date, datetime, timedelta
-from pathlib import Path
 
 import requests
 
 from config import settings
+from api_utilities import create_directory, save_data
 
 
 API_KEY = settings.TICKETMASTER_API_KEY
@@ -22,19 +20,10 @@ DESTINATION_FILENAME = 'events.json'
 
 def download_next_week_events():
     try:
-        create_directory()
+        create_directory(DESTINATION_DIRECTORY)
         events = search_denver_next_week_events()
-        save_events(events)
     except Exception as e:
         print('An exception occured: ', e)
-
-
-def create_directory():
-    dirpath = Path(DESTINATION_DIRECTORY)
-    if dirpath.exists():
-        shutil.rmtree(dirpath)
-
-    os.mkdir(dirpath)
 
 
 def search_denver_next_week_events():
@@ -51,12 +40,6 @@ def search_denver_next_week_events():
         page = page + 1
 
     return all_events
-
-
-def save_events(events):
-    file_path = os.path.join(DESTINATION_DIRECTORY, DESTINATION_FILENAME)
-    with open(file_path, 'w') as data_file:
-        json.dump(events, data_file)
 
 
 def query_params(page):
