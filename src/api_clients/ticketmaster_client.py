@@ -26,8 +26,7 @@ def download_next_week_events():
         events = search_denver_next_week_events()
         save_events(events)
     except Exception as e:
-        print('An exception occured: ', e.__class__)
-        print('Exception message: ', e.message)
+        print('An exception occured: ', e)
 
 
 def create_directory():

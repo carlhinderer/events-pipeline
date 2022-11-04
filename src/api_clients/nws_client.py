@@ -61,8 +61,7 @@ def download_next_week_weather():
         forecasts = retrive_next_week_forecast()
         save_forecast(forecasts)
     except Exception as e:
-        print('An exception occured: ', e.__class__)
-        print('Exception message: ', e.message)
+        print('An exception occured: ', e)
 
 
 def create_directory():
