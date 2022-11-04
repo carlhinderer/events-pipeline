@@ -134,8 +134,8 @@ def save_events(df):
 
 def process_events():
     spark = SparkSession.builder.appName("Process raw events").master("local").getOrCreate()
-    events_df = read_raw_events(spark)
-    events_df = clean_events(events_df)
+    raw_events_df = read_raw_events(spark)
+    events_df = clean_events(raw_events_df)
     save_events(events_df)
     spark.stop()
 
