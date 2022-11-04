@@ -75,8 +75,8 @@ def retrive_next_week_forecast():
 def get_forecast_for_city(city):
     json = request_forecast_for_city(city)
     forecast_data = json['properties']['periods']
-    forecast_data.insert(0, {'city': city})
-    return forecast_data
+    city_forecast = {'city': city, 'forecasts': forecast_data}
+    return city_forecast
 
 
 def request_forecast_for_city(city):
