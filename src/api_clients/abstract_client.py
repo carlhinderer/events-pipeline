@@ -43,9 +43,9 @@ def retrieve_next_week_holidays():
 
 def get_holidays_for_date(day_to_retrieve):
     json = request_holidays_for_date(day_to_retrieve)
-    holiday_key = str(day_to_retrieve)
     holiday_names = [holiday['name'] for holiday in json]
-    return {holiday_key: holiday_names}
+    date_holidays = { 'date': str(day_to_retrieve), 'holidays': holiday_names}
+    return date_holidays
 
 
 def request_holidays_for_date(day_to_retrieve):
