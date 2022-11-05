@@ -49,7 +49,7 @@ def get_enriched_events(events_df, weather_df, holidays_df):
     enriched_df = add_daytime_weather(events_df, weather_df)
     enriched_df = add_nighttime_weather(enriched_df, weather_df)
     enriched_df = add_holidays(enriched_df, holidays_df)
-    return enriched_df
+    return enriched_df.sort('start_date', 'start_time')
 
 
 def save_enriched_events(df):
